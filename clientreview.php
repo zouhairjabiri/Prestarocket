@@ -39,13 +39,31 @@ class ClientReview extends Module  implements WidgetInterface
 
 
 
-        public function renderWidget($hookName, array $configuration)
-        {
-            
-        } 
-        public function getWidgetVariables($hookName, array $configuration)
-        {
-            
-        }
- 
+    public function install()
+    {
+        include(dirname(__FILE__) . '/sqlHelpers/install.php');
+       return parent::install();
+    }
+
+    public function uninstall()
+    {
+        include(dirname(__FILE__) . '/sqlHelpers/uninstall.php');
+        return parent::uninstall();
+    }
+
+
+    public function renderWidget($hookName, array $configuration)
+    {       
+    } 
+    
+    public function getWidgetVariables($hookName, array $configuration)
+    {        
+    }
+
+    //To enable the tab in backend 
+    //later ToDo
+    public function addTab(){}
+
+
+
 }
