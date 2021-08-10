@@ -1,3 +1,3 @@
 <h1>
-test
+Static text
 </h1>
