@@ -16,7 +16,6 @@ class ClientReview extends Module
         $this->name = 'clientreview';
         $this->author = 'Zouhair';
         $this->tab = 'Avis Clients';
-        $this->version = '0.1.1';
         $this->need_instance = 0;
         $this->version = '1.0';
         $this->bootstrap = true;
