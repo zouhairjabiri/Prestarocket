@@ -58,7 +58,7 @@ class ClientReview extends Module
         $tab->id_parent = (int)Tab::getIdFromClassName('DEFAULT');
         $languages = Language::getLanguages();
 
-        //!!!!!!!!!!!!!! we have disbled the MultiLang no need
+        //!!!!!!!!!!!!!! we have disabled the MultiLang=false , so no need
 
         // foreach ($languages as $lang) {
         //     $tab->name[$lang['id_lang']] = $this->l($this->tab);
