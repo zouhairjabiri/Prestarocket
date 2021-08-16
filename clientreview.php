@@ -5,8 +5,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require_once _PS_MODULE_DIR_ . 'clientreview/autoload.php';
-
+//  require_once _PS_MODULE_DIR_ . 'clientreview/autoload.php';
+require_once _PS_MODULE_DIR_ . '/clientreview/classes/Review.php';
 
 class ClientReview extends Module  
 {
@@ -15,41 +15,38 @@ class ClientReview extends Module
     {
         $this->name = 'clientreview';
         $this->author = 'Zouhair';
+        $this->tab = 'Avis Clients';
+        $this->version = '0.1.1';
+        $this->need_instance = 0;
         $this->version = '1.0';
         $this->bootstrap = true;
 
         parent::__construct();
 
-        $this->displayName = $this->trans('Client Review', [], 'Modules.ClientReview.Admin');
-        $this->description = $this->trans(
-            'Module pour afficher des avis client au hasard sur le site web',
-            [],
-            'Modules.ClientReview.Admin'
-        );
+        
+        $this->displayName = $this->l('Gestion des avis clients');
+        $this->description = $this->l('Module pour afficher des avis client au hasard sur le site web');
 
-        //pop up To cofirm the uninstall
-        $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
+        // $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
+        // $this->ps_versions_compliancy = [
+        //     'min' => '1.7.2.0',
+        //     'max' => _PS_VERSION_
+        // ];
 
-        $this->ps_versions_compliancy = [
-            'min' => '1.7.2.0',
-            'max' => _PS_VERSION_
-        ];
-
-        // $this->templatefile= 'module:clientreview/views/templates/hook/ClientReview.tpl';
-    }
+     }
 
 
 
     public function install()
     {
-        include(dirname(__FILE__) . '/sqlHelpers/install.php');
+       include(dirname(__FILE__) . '/sqlHelpers/install.php');
        return parent::install() && $this->addTab();
     }
 
     public function uninstall()
     {
         include(dirname(__FILE__) . '/sqlHelpers/uninstall.php');
-        return parent::uninstall();
+        return parent::uninstall()&& $this->removeTab();
     }
 
     //To enable the tab in backend 
@@ -57,13 +54,16 @@ class ClientReview extends Module
     public function addTab()
     {
         $tab = new Tab();
-        $tab->class_name = $this->name;
+        $tab->class_name = 'AdminClientReview';
         $tab->module = $this->name;
         $tab->id_parent = (int)Tab::getIdFromClassName('DEFAULT');
-         $languages = Language::getLanguages();
-        foreach ($languages as $lang) {
-            $tab->name[$lang['id_lang']] = $this->l('Client Review V1');
-        }
+        $languages = Language::getLanguages();
+
+        //!!!!!!!!!!!!!! we have disbled the MultiLang no need
+
+        // foreach ($languages as $lang) {
+        //     $tab->name[$lang['id_lang']] = $this->l($this->tab);
+        // }
         try {
             $tab->save();
         } catch (Exception $e) {
@@ -76,7 +76,7 @@ class ClientReview extends Module
 
     public function removeTab()
     {
-        $idTab = (int)Tab::getIdFromClassName($this->name);
+        $idTab = (int)Tab::getIdFromClassName('AdminClientReview');
         if ($idTab) {
             $tab = new Tab($idTab);
             try {
@@ -88,4 +88,6 @@ class ClientReview extends Module
         }
         return true;
     }
+ 
+
 }
