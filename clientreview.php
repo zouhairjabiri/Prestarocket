@@ -10,7 +10,7 @@ require_once _PS_MODULE_DIR_ . '/clientreview/classes/Review.php';
 
 class ClientReview extends Module  
 {
-    // private $templatefile;
+     private $templatefile;
     public function __construct()
     {
         $this->name = 'clientreview';
@@ -31,6 +31,9 @@ class ClientReview extends Module
             'min' => '1.7.2.0',
             'max' => _PS_VERSION_
         ];
+
+        $this->templatefile= 'module:clientreview/views/templates/front/clientreview.tpl';
+
 
      }
 
@@ -87,9 +90,36 @@ class ClientReview extends Module
     }
 
     public function hookDisplayHome($params){
-        $sql = 'SELECT  titre, contenu FROM `' . _DB_PREFIX_ . 'client_review`ORDER BY RAND() LIMIT 1';
-        $result = Db::getInstance()->ExecuteS($sql);
-        $this->smarty->assign($result);
-        return $this->fetch($this->templateFile);
+        $sql = 'SELECT  * FROM `' . _DB_PREFIX_ . 'client_review` ORDER BY RAND() LIMIT 1';
+        $result = Db::getInstance()->executeS($sql);
+   
+
+        //Debug Error
+        //Db::getInstance()->execute("INSERT INTO `"._DB_PREFIX_."message` (`id_cart`, `id_employee`, `id_order`, `message`, `private`, `date_add`) VALUES (8, 0, 0, 'founded', 0, NOW())");
+
+
+        if (!empty($result)) {
+
+            $this->context->smarty->assign(
+                array(
+                    'result' => $result,
+                    'exist' => 'Y'
+                )
+            );   
+
+        }else{
+            $result = [];
+            $this->context->smarty->assign(
+                array(
+                    'result' => $result,
+                    'exist' => 'N'
+             
+                )
+            );        }
+
+
+
+
+        return $this->fetch($this->templatefile);
     }
 }
