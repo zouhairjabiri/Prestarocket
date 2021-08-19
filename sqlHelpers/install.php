@@ -6,8 +6,8 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'client_review` (
     `id_avis` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `titre` VARCHAR(50) NOT NULL,
     `contenu` VARCHAR(100),
-    `date_ajout` DATE,
-    `date_update` DATE,
+    `date_ajout` datetime NOT NULL,
+    `date_update` datetime NOT NULL,
     PRIMARY KEY  (`id_avis`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 

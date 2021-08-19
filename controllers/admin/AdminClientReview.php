@@ -65,19 +65,6 @@ class AdminClientReviewController extends ModuleAdminController
                     'lang' => false,
                     'autoload_rte' => true,  
                 ],
-
-                // [
-                //     'type' => 'hidden',
-                //     'label' => $this->module->l('date_ajout'),
-                //     'name' => 'date_ajout',
-                //     'lang' => false,
-                //  ], [
-                //     'type' => 'hidden',
-                //     'label' => $this->module->l('date_update'),
-                //     'name' => 'date_update',
-                //     'lang' => false,
-                  
-                // ],
             ],
              'submit' => [
                 'title' => $this->l('Save'),  

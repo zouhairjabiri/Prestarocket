@@ -26,11 +26,11 @@ class ClientReview extends Module
         $this->displayName = $this->l('Gestion des avis clients');
         $this->description = $this->l('Module pour afficher des avis client au hasard sur le site web');
 
-        // $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
-        // $this->ps_versions_compliancy = [
-        //     'min' => '1.7.2.0',
-        //     'max' => _PS_VERSION_
-        // ];
+        $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
+        $this->ps_versions_compliancy = [
+            'min' => '1.7.2.0',
+            'max' => _PS_VERSION_
+        ];
 
      }
 
@@ -39,7 +39,7 @@ class ClientReview extends Module
     public function install()
     {
        include(dirname(__FILE__) . '/sqlHelpers/install.php');
-       return parent::install() && $this->addTab();
+       return parent::install() && $this->addTab() && $this->registerHook('displayHome');
     }
 
     public function uninstall()
@@ -58,11 +58,9 @@ class ClientReview extends Module
         $tab->id_parent = (int)Tab::getIdFromClassName('DEFAULT');
         $languages = Language::getLanguages();
 
-        //!!!!!!!!!!!!!! we have disabled the MultiLang=false , so no need
-
-        // foreach ($languages as $lang) {
-        //     $tab->name[$lang['id_lang']] = $this->l($this->tab);
-        // }
+        foreach ($languages as $lang) {
+            $tab->name[$lang['id_lang']] = $this->l($this->tab);
+        }
         try {
             $tab->save();
         } catch (Exception $e) {
@@ -87,6 +85,11 @@ class ClientReview extends Module
         }
         return true;
     }
- 
 
+    public function hookDisplayHome($params){
+        $sql = 'SELECT  titre, contenu FROM `' . _DB_PREFIX_ . 'client_review`ORDER BY RAND() LIMIT 1';
+        $result = Db::getInstance()->ExecuteS($sql);
+        $this->smarty->assign($result);
+        return $this->fetch($this->templateFile);
+    }
 }
